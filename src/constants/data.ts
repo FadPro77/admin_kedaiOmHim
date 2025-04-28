@@ -8,10 +8,10 @@ export const navItems: NavItem[] = [
     label: 'Dashboard'
   },
   {
-    title: 'Airlines',
-    href: '/airlines',
-    icon: 'plane',
-    label: 'Airlines'
+    title: 'Menu',
+    href: '/menu',
+    icon: 'clipboardList',
+    label: 'Menu'
   },
   {
     title: 'Flights',

@@ -4,126 +4,79 @@ import { DataTableSkeleton } from '@/components/shared/data-table-skeleton';
 import Heading from '@/components/shared/heading';
 import PopupModal from '@/components/shared/popup-modal';
 import { Button } from '@/components/ui/button';
-import { flightsService } from '@/services/flight';
-import { airlinesService } from '@/services/airline';
-import { airportsService } from '@/services/airport';
-import { TFlights, TFlightCreate } from '@/types/flights';
-
+import { menuService } from '../../services/menu';
+import { TMenu, TMenuCreate } from '@/types/menu';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, Trash } from 'lucide-react';
 import { useState } from 'react';
-import { FlightsForm } from '@/components/flights/flights-form';
+import { MenuForm } from '../../components/menu/menu-form';
 import EditModal from '@/components/shared/edit-modal';
 
-export default function FlightsPage() {
+export default function MenuPage() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
-  const [editData, setEditData] = useState<TFlights | null>(null);
+  const [editData, setEditData] = useState<TMenu | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const queryClient = useQueryClient();
 
-  const { data: flights, isLoading } = useQuery({
-    queryKey: ['flights'],
-    queryFn: flightsService.getAll
-  });
-
-  const { data: airlines } = useQuery({
-    queryKey: ['airlines'],
-    queryFn: airlinesService.getAll
-  });
-
-  const { data: airports } = useQuery({
-    queryKey: ['airports'],
-    queryFn: airportsService.getAll
+  const { data: menu, isLoading } = useQuery({
+    queryKey: ['menu'],
+    queryFn: menuService.getAll
   });
 
   const createMutation = useMutation({
-    mutationFn: flightsService.create,
+    mutationFn: menuService.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['flights'] });
+      queryClient.invalidateQueries({ queryKey: ['menu'] });
     }
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: TFlightCreate }) =>
-      flightsService.update(id, data),
+    mutationFn: ({ id, data }: { id: number; data: TMenuCreate }) =>
+      menuService.update(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['flights'] });
+      queryClient.invalidateQueries({ queryKey: ['menu'] });
       setEditData(null);
     }
   });
 
   const deleteMutation = useMutation({
-    mutationFn: flightsService.delete,
+    mutationFn: menuService.delete,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['flights'] });
+      queryClient.invalidateQueries({ queryKey: ['menu'] });
       setDeleteId(null);
     }
   });
 
-  const columns: ColumnDef<TFlights>[] = [
+  const columns: ColumnDef<TMenu>[] = [
     {
-      accessorKey: 'flightNumber',
-      header: 'Flight Number'
+      accessorKey: 'nama',
+      header: 'Nama Menu'
     },
     {
-      accessorKey: 'airlineId',
-      header: 'Airline',
-      cell: ({ row }) => {
-        const airline = airlines?.find(
-          (airline) => airline.id === row.original.airlineId
-        );
-        return airline ? airline.name : 'Unknown Airline';
-      }
+      accessorKey: 'harga',
+      header: 'Harga Menu'
     },
     {
-      accessorKey: 'departureAirport',
-      header: 'Departure Airport',
-      cell: ({ row }) => {
-        const airport = airports?.find(
-          (airport) => airport.id === row.original.departureAirport
-        );
-        return airport ? airport.name : 'Unknown Airport';
-      }
-    },
-
-    {
-      accessorKey: 'departureTime',
-      header: 'Departure Time',
-      cell: ({ row }) => new Date(row.original.departureTime).toLocaleString()
+      accessorKey: 'kategori',
+      header: 'Kategori Menu'
     },
     {
-      accessorKey: 'arrivalAirport',
-      header: 'Arrival Airport',
-      cell: ({ row }) => {
-        const airport = airports?.find(
-          (airport) => airport.id === row.original.arrivalAirport
-        );
-        return airport ? airport.name : 'Unknown Airport';
-      }
+      accessorKey: 'ketersediaan',
+      header: 'Ketersediaan',
+      cell: ({ row }) => (row.original.ketersediaan ? 'true' : 'false')
     },
     {
-      accessorKey: 'arrivalTime',
-      header: 'Arrival Time',
-      cell: ({ row }) => new Date(row.original.arrivalTime).toLocaleString()
-    },
-    {
-      accessorKey: 'terminal',
-      header: 'Terminal'
-    },
-    {
-      accessorKey: 'information',
-      header: 'Information'
-    },
-
-    {
-      accessorKey: 'price',
-      header: 'Price'
-    },
-    {
-      accessorKey: 'class',
-      header: 'Class'
+      accessorKey: 'image',
+      header: 'Gambar',
+      cell: ({ row }) => (
+        <img
+          src={row.original.image}
+          alt={row.original.nama}
+          className="h-10 w-10 object-contain"
+        />
+      )
     },
     {
       id: 'actions',
@@ -156,12 +109,15 @@ export default function FlightsPage() {
   return (
     <div className="space-y-4 p-8">
       <div className="flex items-center justify-between">
-        <Heading title="Flights" description="Manage Flight" />
+        <Heading title="Menu" description="Kelola data menu" />
         <PopupModal
           renderModal={(onClose) => (
             <div className="p-6">
-              <Heading title="Add Flight" description="Add new flight" />
-              <FlightsForm
+              <Heading
+                title="Tambah Menu"
+                description="Tambah data menu baru"
+              />
+              <MenuForm
                 onSubmit={async (data) => {
                   await createMutation.mutateAsync(data);
                   onClose();
@@ -173,7 +129,7 @@ export default function FlightsPage() {
         />
       </div>
 
-      <DataTable columns={columns} data={flights || []} />
+      <DataTable columns={columns} data={menu || []} />
 
       <AlertModal
         isOpen={!!deleteId}
@@ -191,8 +147,8 @@ export default function FlightsPage() {
           }}
         >
           <div className="p-6">
-            <Heading title="Edit Dicount" description="Edit dicount" />
-            <FlightsForm
+            <Heading title="Edit Maskapai" description="Edit data maskapai" />
+            <MenuForm
               initialData={editData}
               onSubmit={async (data) => {
                 await updateMutation.mutateAsync({

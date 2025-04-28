@@ -34,7 +34,8 @@ import {
   Armchair,
   Plane,
   Percent,
-  Globe
+  Globe,
+  ClipboardList
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -71,6 +72,7 @@ export const Icons = {
   plane: Plane,
   percent: Percent,
   globe: Globe,
+  clipboardList: ClipboardList,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"
