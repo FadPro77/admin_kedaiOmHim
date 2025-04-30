@@ -224,7 +224,9 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {isLoadingDataTotal ? 'Loading...' : totalPengeluaran}
+                    {isLoadingDataTotal
+                      ? 'Loading...'
+                      : `Rp ${totalPengeluaran.toLocaleString('id-ID')}`}
                   </div>
                 </CardContent>
               </Card>
@@ -249,7 +251,9 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {isLoadingDataTotal ? 'Loading...' : sumPemasukan}
+                    {isLoadingDataTotal
+                      ? 'Loading...'
+                      : `Rp ${sumPemasukan.toLocaleString('id-ID')}`}
                   </div>
                 </CardContent>
               </Card>
@@ -272,7 +276,9 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {isLoadingDataTotal ? 'Loading...' : totalSaldo}
+                    {isLoadingDataTotal
+                      ? 'Loading...'
+                      : `Rp ${totalSaldo.toLocaleString('id-ID')}`}
                   </div>
                 </CardContent>
               </Card>

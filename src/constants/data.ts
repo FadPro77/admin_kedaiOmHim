@@ -18,6 +18,18 @@ export const navItems: NavItem[] = [
     href: '/pengeluaran',
     icon: 'BadgeMinus',
     label: 'Pengeluaran'
+  },
+  {
+    title: 'Saldo',
+    href: '/saldo',
+    icon: 'BadgeDollarSign',
+    label: 'Saldo'
+  },
+  {
+    title: 'Payment',
+    href: '/payment',
+    icon: 'ArrowLeftRight',
+    label: 'Payment'
   }
 
   // {
