@@ -36,7 +36,9 @@ import {
   Percent,
   Globe,
   ClipboardList,
-  BadgeMinus
+  BadgeMinus,
+  BadgeDollarSign,
+  ArrowLeftRight
 } from 'lucide-react';
 
 export type Icon = LucideIcon;
@@ -75,6 +77,8 @@ export const Icons = {
   globe: Globe,
   clipboardList: ClipboardList,
   BadgeMinus: BadgeMinus,
+  BadgeDollarSign: BadgeDollarSign,
+  ArrowLeftRight: ArrowLeftRight,
   gitHub: ({ ...props }: LucideProps) => (
     <svg
       aria-hidden="true"

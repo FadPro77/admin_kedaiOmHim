@@ -10,6 +10,8 @@ import DashboardPage from '@/pages/dashboard';
 import SignInPage from '@/pages/auth/signin';
 import MenuPage from '@/pages/menu';
 import PengeluaranPage from '@/pages/pengeluaran';
+import SaldoPage from '@/pages/saldo';
+import PaymentPage from '@/pages/payments';
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +32,9 @@ export default function AppRouter() {
         { element: <DashboardPage />, index: true },
         { path: 'menu', element: <MenuPage /> },
         { path: 'pengeluaran', element: <PengeluaranPage /> },
-        { path: 'form', element: <FormPage /> }
+        { path: 'form', element: <FormPage /> },
+        { path: 'saldo', element: <SaldoPage /> },
+        { path: 'payment', element: <PaymentPage /> }
       ]
     }
   ];
