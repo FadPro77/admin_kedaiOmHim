@@ -39,7 +39,8 @@ export function MenuForm({ initialData, onSubmit, loading }: TMenuFormProps) {
       nama: initialData?.nama || '',
       harga: initialData?.harga || 0,
       kategori: initialData?.kategori || 'Makanan',
-      ketersediaan: initialData?.ketersediaan || false
+      ketersediaan: initialData?.ketersediaan || false,
+      image: initialData?.image || ''
     }
   });
 
@@ -159,7 +160,7 @@ export function MenuForm({ initialData, onSubmit, loading }: TMenuFormProps) {
               <FormControl>
                 <FileUpload
                   onChange={(files) => field.onChange(files[0])}
-                  value={field.value ? [field.value] : []}
+                  value={field.value instanceof File ? [field.value] : []}
                 />
               </FormControl>
               <FormMessage />

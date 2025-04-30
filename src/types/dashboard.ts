@@ -30,4 +30,5 @@ export type TDataResponse = {
   pesanan: number;
   saldo: number;
   users: number;
+  pemasukanCount: number;
 };

@@ -17,14 +17,13 @@ export type TMenu = {
   harga: number;
   ketersediaan: boolean;
   kategori: string;
-  image: string; // Ini URL image yang tersimpan
+  image: string;
 };
 
-// Perbaiki di sini: image bisa File (baru) atau string (URL lama)
 export type TMenuCreate = {
   nama: string;
   harga: number;
   ketersediaan: boolean;
   kategori: string;
-  image: File;
+  image: File | string;
 };
