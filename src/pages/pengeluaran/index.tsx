@@ -4,86 +4,65 @@ import { DataTableSkeleton } from '@/components/shared/data-table-skeleton';
 import Heading from '@/components/shared/heading';
 import PopupModal from '@/components/shared/popup-modal';
 import { Button } from '@/components/ui/button';
-import { notificationsService } from '../../services/notifications';
-import { usersService } from '../../services/users';
-import { TNotifications, TNotificationsCreate } from '@/types/notifications';
+import { pengeluaranService } from '../../services/pengeluaran';
+import { TPengeluaran, TPengeluaranCreate } from '@/types/pengeluaran';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, Trash } from 'lucide-react';
 import { useState } from 'react';
-import { NotificationsForm } from '../../components/notifications/notifications-form';
+import { PengeluaranForm } from '../../components/pengeluaran/pengeluaran-form';
 import EditModal from '@/components/shared/edit-modal';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default function NotificationsPage() {
+export default function PengeluaranPage() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
-  const [editData, setEditData] = useState<TNotifications | null>(null);
+  const [editData, setEditData] = useState<TPengeluaran | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const queryClient = useQueryClient();
 
-  const { data: notifications, isLoading } = useQuery({
-    queryKey: ['notifications'],
-    queryFn: notificationsService.getAll
-  });
-
-  const { data: users = [] } = useQuery({
-    queryKey: ['users'],
-    queryFn: usersService.getAll
+  const { data: pengeluaran, isLoading } = useQuery({
+    queryKey: ['pengeluaran'],
+    queryFn: pengeluaranService.getAll
   });
 
   const createMutation = useMutation({
-    mutationFn: notificationsService.create,
+    mutationFn: pengeluaranService.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      queryClient.invalidateQueries({ queryKey: ['pengeluaran'] });
     }
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: TNotificationsCreate }) =>
-      notificationsService.update(id, data),
+    mutationFn: ({ id, data }: { id: number; data: TPengeluaranCreate }) =>
+      pengeluaranService.update(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      queryClient.invalidateQueries({ queryKey: ['pengeluaran'] });
       setEditData(null);
     }
   });
 
   const deleteMutation = useMutation({
-    mutationFn: notificationsService.delete,
+    mutationFn: pengeluaranService.delete,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      queryClient.invalidateQueries({ queryKey: ['pengeluaran'] });
       setDeleteId(null);
     }
   });
 
-  const columns: ColumnDef<TNotifications>[] = [
-    {
-      accessorKey: 'title',
-      header: 'Judul'
-    },
-    {
-      accessorKey: 'description',
-      header: 'Deskripsi'
-    },
-    {
-      accessorKey: 'type',
-      header: 'Tipe'
-    },
-    {
-      accessorKey: 'userId',
-      header: 'Penerima',
-      cell: ({ row }) => {
-        const userId = row.original.userId;
-        if (!userId) return 'Global';
+  const totalPengeluaran =
+    pengeluaran?.reduce((acc, curr) => acc + curr.jumlah, 0) || 0;
 
-        const user = users.find((u) => u.id === Number(userId));
-        return user ? user.email : userId.toString();
-      }
+  const columns: ColumnDef<TPengeluaran>[] = [
+    {
+      accessorKey: 'keterangan',
+      header: 'Keterangan Pengeluaran'
     },
     {
-      accessorKey: 'isRead',
-      header: 'Sudah Dibaca',
-      cell: ({ row }) => (row.original.isRead ? 'Ya' : 'Tidak')
+      accessorKey: 'jumlah',
+      header: 'Jumlah pengeeluaran'
     },
+
     {
       id: 'actions',
       cell: ({ row }) => (
@@ -110,21 +89,20 @@ export default function NotificationsPage() {
     }
   ];
 
-  if (isLoading) return <DataTableSkeleton columnCount={5} />;
+  if (isLoading) return <DataTableSkeleton columnCount={3} />;
 
   return (
     <div className="space-y-4 p-8">
       <div className="flex items-center justify-between">
-        <Heading title="Notifikasi" description="Kelola data notifikasi" />
+        <Heading title="Pengeluaran" description="Kelola data pengeluaran" />
         <PopupModal
           renderModal={(onClose) => (
             <div className="p-6">
               <Heading
-                title="Tambah Notifikasi"
-                description="Tambah data notifikasi baru"
+                title="Tambah Pengeluaran"
+                description="Tambah data pengeluaran baru"
               />
-              <NotificationsForm
-                users={users}
+              <PengeluaranForm
                 onSubmit={async (data) => {
                   await createMutation.mutateAsync(data);
                   onClose();
@@ -136,15 +114,36 @@ export default function NotificationsPage() {
         />
       </div>
 
-      <DataTable
-        columns={columns}
-        data={notifications || []}
-        pagination={{
-          pageSize: 10,
-          pageIndex: 0,
-          pageCount: 1
-        }}
-      />
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Total Pengeluaran
+            </CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              className="h-4 w-4 text-muted-foreground"
+            >
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {isLoading
+                ? 'Loading...'
+                : `Rp ${totalPengeluaran.toLocaleString('id-ID')}`}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <DataTable columns={columns} data={pengeluaran || []} />
 
       <AlertModal
         isOpen={!!deleteId}
@@ -162,11 +161,8 @@ export default function NotificationsPage() {
           }}
         >
           <div className="p-6">
-            <Heading
-              title="Edit Notifikasi"
-              description="Edit data notifikasi"
-            />
-            <NotificationsForm
+            <Heading title="Edit Maskapai" description="Edit data maskapai" />
+            <PengeluaranForm
               initialData={editData}
               onSubmit={async (data) => {
                 await updateMutation.mutateAsync({
@@ -177,7 +173,6 @@ export default function NotificationsPage() {
                 setEditData(null);
               }}
               loading={updateMutation.isPending}
-              users={users}
             />
           </div>
         </EditModal>
