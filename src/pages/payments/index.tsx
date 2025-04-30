@@ -13,7 +13,6 @@ import { useState } from 'react';
 import { PaymentForm } from '../../components/payment/payment-form';
 import EditModal from '@/components/shared/edit-modal';
 import { format } from 'date-fns';
-import { TPesanan } from '@/types/pesanan';
 import { pesananService } from '@/services/pesanan';
 
 export default function PaymentPage() {
