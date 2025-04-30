@@ -5,14 +5,11 @@ import ProtectedRoute from './ProtectedRoute';
 
 import FormPage from '@/pages/form';
 import NotFound from '@/pages/not-found';
-import NotificationsPage from '@/pages/notifications';
-import SeatsPage from '@/pages/seats';
-import AirportsPage from '@/pages/airports';
-import DiscountsPage from '@/pages/discounts';
 import DashboardLayout from '@/components/layout/dashboard-layout';
 import DashboardPage from '@/pages/dashboard';
 import SignInPage from '@/pages/auth/signin';
 import MenuPage from '@/pages/menu';
+import PengeluaranPage from '@/pages/pengeluaran';
 
 // ----------------------------------------------------------------------
 
@@ -32,10 +29,7 @@ export default function AppRouter() {
       children: [
         { element: <DashboardPage />, index: true },
         { path: 'menu', element: <MenuPage /> },
-        { path: 'notifications', element: <NotificationsPage /> },
-        { path: 'seats', element: <SeatsPage /> },
-        { path: 'airports', element: <AirportsPage /> },
-        { path: 'discount', element: <DiscountsPage /> },
+        { path: 'pengeluaran', element: <PengeluaranPage /> },
         { path: 'form', element: <FormPage /> }
       ]
     }
