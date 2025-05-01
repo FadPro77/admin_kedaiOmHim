@@ -30,6 +30,12 @@ export const navItems: NavItem[] = [
     href: '/payment',
     icon: 'ArrowLeftRight',
     label: 'Payment'
+  },
+  {
+    title: 'pesanan',
+    href: '/pesanan',
+    icon: 'BookText',
+    label: 'Pesanan'
   }
 
   // {

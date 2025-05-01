@@ -2,110 +2,108 @@ import { AlertModal } from '@/components/shared/alert-modal';
 import DataTable from '../../components/shared/data-table';
 import { DataTableSkeleton } from '@/components/shared/data-table-skeleton';
 import Heading from '@/components/shared/heading';
-import PopupModal from '@/components/shared/popup-modal';
 import { Button } from '@/components/ui/button';
-import { paymentService } from '../../services/payment';
-import { TPayment, TPaymentCreate } from '@/types/payment';
+import { pesananService } from '../../services/pesanan';
+import { TPesanan, TPesananCreate } from '@/types/pesanan';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, Trash } from 'lucide-react';
 import { useState } from 'react';
-import { PaymentForm } from '../../components/payment/payment-form';
+import { PesananForm } from '../../components/pesanan/pesanan-form';
 import EditModal from '@/components/shared/edit-modal';
 import { format } from 'date-fns';
-import { pesananService } from '@/services/pesanan';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export default function PaymentPage() {
+export default function PesananPage() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
-  const [editData, setEditData] = useState<TPayment | null>(null);
+  const [editData, setEditData] = useState<TPesanan | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const queryClient = useQueryClient();
 
-  const { data: payment, isLoading } = useQuery({
-    queryKey: ['payment'],
-    queryFn: paymentService.getAll
-  });
-
-  const { data: pesanan } = useQuery({
+  const { data: pesanan, isLoading } = useQuery({
     queryKey: ['pesanan'],
     queryFn: pesananService.getAll
   });
 
-  const createMutation = useMutation({
-    mutationFn: paymentService.create,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['payment'] });
-    }
-  });
-
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: TPaymentCreate }) =>
-      paymentService.update(id, data),
+    mutationFn: ({ id, data }: { id: number; data: TPesananCreate }) =>
+      pesananService.update(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['payment'] });
+      queryClient.invalidateQueries({ queryKey: ['pesanan'] });
       setEditData(null);
     }
   });
 
   const deleteMutation = useMutation({
-    mutationFn: paymentService.delete,
+    mutationFn: pesananService.delete,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['payment'] });
+      queryClient.invalidateQueries({ queryKey: ['pesanan'] });
       setDeleteId(null);
     }
   });
 
-  const totalPayment =
-    payment?.reduce((acc, curr) => acc + curr.jumlah, 0) || 0;
+  const sumPesanan =
+    pesanan?.reduce((acc, pesananItems) => {
+      const totalSubtotal = pesananItems.pesanan_items.reduce(
+        (subTotalAcc, item) => subTotalAcc + item.subtotal,
+        0
+      );
+      return acc + totalSubtotal;
+    }, 0) || 0;
 
-  const columns: ColumnDef<TPayment>[] = [
+  const columns: ColumnDef<TPesanan>[] = [
     {
       accessorKey: 'id',
-      header: 'Payment id'
-    },
-    {
-      accessorKey: 'metode',
-      header: 'Metode payment'
+      header: 'Id Pesanan'
     },
     {
       accessorKey: 'status',
-      header: 'Status payment'
+      header: 'Status Pesanan'
     },
     {
-      accessorKey: 'transaksi_id',
-      header: 'transaksi id'
+      accessorKey: 'users.first_name',
+      header: 'User First Name'
     },
     {
-      accessorKey: 'jumlah',
-      header: 'jumlah payment'
+      accessorKey: 'users.last_name',
+      header: 'User Last Name'
     },
     {
-      accessorKey: 'tanggal',
+      accessorKey: 'users.phone',
+      header: 'User Phone Number'
+    },
+    {
+      accessorKey: 'users.email',
+      header: 'User Email'
+    },
+    {
+      accessorKey: 'created_at',
       header: 'Tanggal',
       cell: ({ row }) => {
-        const rawValue = row.getValue('tanggal');
+        const rawValue = row.getValue('created_at');
 
         if (!rawValue || typeof rawValue !== 'string') {
-          return '-';
+          return '-'; // Kalau bukan string valid, kasih strip
         }
 
         const date = new Date(rawValue);
         if (isNaN(date.getTime())) {
-          return '-';
+          return '-'; // Kalau bukan tanggal valid
         }
 
         return format(date, 'yyyy-MM-dd HH:mm:ss');
       }
     },
     {
-      accessorKey: 'midtrans_order_id',
-      header: 'midtrans order id'
-    },
-    {
-      accessorKey: 'snap_token',
-      header: 'snap token'
+      id: 'subtotal',
+      header: 'Subtotal Pesanan',
+      cell: ({ row }) => {
+        const items = row.original.pesanan_items;
+        const subtotal =
+          items?.reduce((acc, item) => acc + item.subtotal, 0) || 0;
+        return `Rp ${subtotal.toLocaleString('id-ID')}`;
+      }
     },
 
     {
@@ -139,32 +137,14 @@ export default function PaymentPage() {
   return (
     <div className="space-y-4 p-8">
       <div className="flex items-center justify-between">
-        <Heading title="Payment" description="Kelola data payment" />
-        <PopupModal
-          renderModal={(onClose) => (
-            <div className="p-6">
-              <Heading
-                title="Tambah Payment"
-                description="Tambah data payment baru"
-              />
-              <PaymentForm
-                onSubmit={async (data) => {
-                  await createMutation.mutateAsync(data);
-                  onClose();
-                }}
-                loading={createMutation.isPending}
-                pesanan={pesanan || []}
-              />
-            </div>
-          )}
-        />
+        <Heading title="Pesanan" description="Kelola data pesanan" />
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Pengeluaran
+              Total Masuk Pesanan
             </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -183,13 +163,13 @@ export default function PaymentPage() {
             <div className="text-2xl font-bold">
               {isLoading
                 ? 'Loading...'
-                : `Rp ${totalPayment.toLocaleString('id-ID')}`}
+                : `Rp ${sumPesanan.toLocaleString('id-ID')}`}
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <DataTable columns={columns} data={payment || []} />
+      <DataTable columns={columns} data={pesanan || []} />
 
       <AlertModal
         isOpen={!!deleteId}
@@ -207,8 +187,8 @@ export default function PaymentPage() {
           }}
         >
           <div className="p-6">
-            <Heading title="Edit Payment" description="Edit data Payment" />
-            <PaymentForm
+            <Heading title="Edit Pesanan" description="Edit data Pesanan" />
+            <PesananForm
               initialData={editData}
               onSubmit={async (data) => {
                 await updateMutation.mutateAsync({
@@ -219,7 +199,6 @@ export default function PaymentPage() {
                 setEditData(null);
               }}
               loading={updateMutation.isPending}
-              pesanan={pesanan || []}
             />
           </div>
         </EditModal>
