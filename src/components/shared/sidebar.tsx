@@ -37,11 +37,7 @@ export default function Sidebar({ className }: SidebarProps) {
       >
         {!isMinimized && (
           <div className="flex items-center space-x-2">
-            <img
-              src={omHim}
-              alt="Kedai Om Him Logo"
-              className="h-20" // adjust to taste
-            />
+            <img src={omHim} alt="Kedai Om Him Logo" className="h-20" />
             <h1 className="text-2xl font-bold">Kedai Om Him</h1>
           </div>
         )}

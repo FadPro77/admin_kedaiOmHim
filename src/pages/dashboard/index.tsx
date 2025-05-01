@@ -100,15 +100,22 @@ export default function DashboardPage() {
                   </CardTitle>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="h-4 w-4 text-muted-foreground"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-clipboard-list-icon lucide-clipboard-list h-4 w-4 text-muted-foreground"
                   >
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                    <path d="M12 11h4" />
+                    <path d="M12 16h4" />
+                    <path d="M8 11h.01" />
+                    <path d="M8 16h.01" />
                   </svg>
                 </CardHeader>
                 <CardContent>
@@ -124,15 +131,19 @@ export default function DashboardPage() {
                   </CardTitle>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="h-4 w-4 text-muted-foreground"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="lucide lucide-book-text-icon lucide-book-text h-4 w-4 text-muted-foreground"
                   >
-                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
+                    <path d="M8 11h8" />
+                    <path d="M8 7h6" />
                   </svg>
                 </CardHeader>
                 <CardContent>
@@ -176,7 +187,6 @@ export default function DashboardPage() {
                   <CardTitle className="text-sm font-medium">
                     Total Payment
                   </CardTitle>
-
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -187,15 +197,12 @@ export default function DashboardPage() {
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    className="lucide lucide-tower-control h-4 w-4 text-muted-foreground"
+                    className="lucide lucide-arrow-down-up-icon lucide-arrow-down-up h-4 w-4 text-muted-foreground"
                   >
-                    <path d="M18.2 12.27 20 6H4l1.8 6.27a1 1 0 0 0 .95.73h10.5a1 1 0 0 0 .96-.73Z" />
-                    <path d="M8 13v9" />
-                    <path d="M16 22v-9" />
-                    <path d="m9 6 1 7" />
-                    <path d="m15 6-1 7" />
-                    <path d="M12 6V2" />
-                    <path d="M13 2h-2" />
+                    <path d="m3 16 4 4 4-4" />
+                    <path d="M7 20V4" />
+                    <path d="m21 8-4-4-4 4" />
+                    <path d="M17 4v16" />
                   </svg>
                 </CardHeader>
                 <CardContent>
@@ -211,15 +218,22 @@ export default function DashboardPage() {
                   </CardTitle>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    className="lucide lucide-plane h-4 w-4 text-muted-foreground"
+                    className="lucide lucide-banknote-arrow-up-icon lucide-banknote-arrow-up h-4 w-4 text-muted-foreground"
                   >
-                    <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
+                    <path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5" />
+                    <path d="M18 12h.01" />
+                    <path d="M19 22v-6" />
+                    <path d="m22 19-3-3-3 3" />
+                    <path d="M6 12h.01" />
+                    <circle cx="12" cy="12" r="2" />
                   </svg>
                 </CardHeader>
                 <CardContent>
@@ -238,15 +252,22 @@ export default function DashboardPage() {
                   </CardTitle>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    className="lucide lucide-plane h-4 w-4 text-muted-foreground"
+                    className="lucide lucide-banknote-arrow-down-icon lucide-banknote-arrow-down h-4 w-4 text-muted-foreground"
                   >
-                    <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
+                    <path d="M12 18H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5" />
+                    <path d="m16 19 3 3 3-3" />
+                    <path d="M18 12h.01" />
+                    <path d="M19 16v6" />
+                    <path d="M6 12h.01" />
+                    <circle cx="12" cy="12" r="2" />
                   </svg>
                 </CardHeader>
                 <CardContent>
@@ -260,43 +281,22 @@ export default function DashboardPage() {
 
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium">
-                    Total Pemasukan
-                  </CardTitle>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    className="lucide lucide-plane h-4 w-4 text-muted-foreground"
-                  >
-                    <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
-                  </svg>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold">
-                    {isLoadingDataTotal ? 'Loading...' : sumPemasukan}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium">Saldo</CardTitle>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     stroke-width="2"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    className="lucide lucide-plane h-4 w-4 text-muted-foreground"
+                    className="lucide lucide-banknote-icon lucide-banknote h-4 w-4 text-muted-foreground"
                   >
-                    <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" />
+                    <rect width="20" height="12" x="2" y="6" rx="2" />
+                    <circle cx="12" cy="12" r="2" />
+                    <path d="M6 12h.01M18 12h.01" />
                   </svg>
                 </CardHeader>
                 <CardContent>
