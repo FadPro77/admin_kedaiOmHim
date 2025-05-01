@@ -12,6 +12,7 @@ import MenuPage from '@/pages/menu';
 import PengeluaranPage from '@/pages/pengeluaran';
 import SaldoPage from '@/pages/saldo';
 import PaymentPage from '@/pages/payments';
+import PesananPage from '@/pages/pesanan';
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +35,8 @@ export default function AppRouter() {
         { path: 'pengeluaran', element: <PengeluaranPage /> },
         { path: 'form', element: <FormPage /> },
         { path: 'saldo', element: <SaldoPage /> },
-        { path: 'payment', element: <PaymentPage /> }
+        { path: 'payment', element: <PaymentPage /> },
+        { path: 'pesanan', element: <PesananPage /> }
       ]
     }
   ];
