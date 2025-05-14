@@ -16,6 +16,8 @@ export type TPesanan = {
   status: string;
   user_id: number;
   created_at: string;
+
+  address: string;
   users: {
     first_name: string;
     last_name: string;

@@ -26,13 +26,13 @@ export const navItems: NavItem[] = [
     label: 'Saldo'
   },
   {
-    title: 'Payment',
+    title: 'Pembayaran',
     href: '/payment',
     icon: 'ArrowLeftRight',
-    label: 'Payment'
+    label: 'Pembayaran'
   },
   {
-    title: 'pesanan',
+    title: 'Pesanan',
     href: '/pesanan',
     icon: 'BookText',
     label: 'Pesanan'
