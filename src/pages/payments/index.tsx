@@ -139,13 +139,13 @@ export default function PaymentPage() {
   return (
     <div className="space-y-4 p-8">
       <div className="flex items-center justify-between">
-        <Heading title="Payment" description="Kelola data payment" />
+        <Heading title="Pembayaran" description="Kelola data pembayaran" />
         <PopupModal
           renderModal={(onClose) => (
             <div className="p-6">
               <Heading
-                title="Tambah Payment"
-                description="Tambah data payment baru"
+                title="Tambah Pembayaran"
+                description="Tambah data pembayaran baru"
               />
               <PaymentForm
                 onSubmit={async (data) => {
@@ -164,7 +164,7 @@ export default function PaymentPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Payments
+              Total Pembayaran
             </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +207,10 @@ export default function PaymentPage() {
           }}
         >
           <div className="p-6">
-            <Heading title="Edit Payment" description="Edit data Payment" />
+            <Heading
+              title="Edit Pembayaran"
+              description="Edit data Pembayaran"
+            />
             <PaymentForm
               initialData={editData}
               onSubmit={async (data) => {

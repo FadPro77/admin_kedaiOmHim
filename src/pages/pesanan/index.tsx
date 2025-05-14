@@ -13,11 +13,15 @@ import { PesananForm } from '../../components/pesanan/pesanan-form';
 import EditModal from '@/components/shared/edit-modal';
 import { format } from 'date-fns';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useEffect } from 'react';
 
 export default function PesananPage() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [editData, setEditData] = useState<TPesanan | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [selectedDetail, setSelectedDetail] = useState<TPesanan | null>(null);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -25,6 +29,18 @@ export default function PesananPage() {
     queryKey: ['pesanan'],
     queryFn: pesananService.getAll
   });
+
+  const { data: detailPesanan } = useQuery({
+    queryKey: ['pesanan-detail', selectedId],
+    queryFn: () => pesananService.getById(selectedId!),
+    enabled: !!selectedId
+  });
+
+  useEffect(() => {
+    if (detailPesanan) {
+      setSelectedDetail(detailPesanan);
+    }
+  }, [detailPesanan]);
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }: { id: number; data: TPesananCreate }) =>
@@ -63,19 +79,23 @@ export default function PesananPage() {
     },
     {
       accessorKey: 'users.first_name',
-      header: 'User First Name'
+      header: 'Nama Awal Pengguna'
     },
     {
       accessorKey: 'users.last_name',
-      header: 'User Last Name'
+      header: 'Nama Akhir Pengguna'
     },
     {
       accessorKey: 'users.phone',
-      header: 'User Phone Number'
+      header: 'Nomor Telepon Pengguna'
     },
     {
       accessorKey: 'users.email',
-      header: 'User Email'
+      header: 'Email Pengguna'
+    },
+    {
+      accessorKey: 'address',
+      header: 'Alamat Pemesan'
     },
     {
       accessorKey: 'created_at',
@@ -84,12 +104,12 @@ export default function PesananPage() {
         const rawValue = row.getValue('created_at');
 
         if (!rawValue || typeof rawValue !== 'string') {
-          return '-'; // Kalau bukan string valid, kasih strip
+          return '-';
         }
 
         const date = new Date(rawValue);
         if (isNaN(date.getTime())) {
-          return '-'; // Kalau bukan tanggal valid
+          return '-';
         }
 
         return format(date, 'yyyy-MM-dd HH:mm:ss');
@@ -126,6 +146,16 @@ export default function PesananPage() {
             onClick={() => setDeleteId(row.original.id)}
           >
             <Trash className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              setSelectedId(row.original.id);
+              setIsDetailOpen(true);
+            }}
+          >
+            👁️ {/* atau bisa ganti dengan ikon dari Lucide */}
           </Button>
         </div>
       )
@@ -177,6 +207,60 @@ export default function PesananPage() {
         onConfirm={() => deleteId && deleteMutation.mutate(deleteId)}
         loading={deleteMutation.isPending}
       />
+
+      {selectedDetail && (
+        <EditModal
+          isOpen={isDetailOpen}
+          onClose={() => {
+            setIsDetailOpen(false);
+            setSelectedId(null);
+            setSelectedDetail(null);
+          }}
+        >
+          <div className="space-y-4 p-6">
+            <Heading
+              title="Detail Pesanan"
+              description={`Pesanan ID: ${selectedDetail.id}`}
+            />
+            <p>
+              <strong>Status:</strong> {selectedDetail.status}
+            </p>
+            <p>
+              <strong>Alamat:</strong> {selectedDetail.address}
+            </p>
+            <p>
+              <strong>Pengguna:</strong> {selectedDetail.users.first_name}{' '}
+              {selectedDetail.users.last_name}
+            </p>
+            <p>
+              <strong>No. Telepon:</strong> {selectedDetail.users.phone}
+            </p>
+
+            <div className="space-y-2">
+              {selectedDetail.pesanan_items.map((item, idx) => (
+                <div key={idx} className="rounded border p-2 shadow-sm">
+                  <img
+                    src={item.menu.image}
+                    alt={item.menu.nama}
+                    className="mb-2 h-20 w-20 object-cover"
+                  />
+                  <p>
+                    <strong>Menu:</strong> {item.menu.nama} (
+                    {item.menu.kategori})
+                  </p>
+                  <p>
+                    <strong>Jumlah:</strong> {item.jumlah}
+                  </p>
+                  <p>
+                    <strong>Subtotal:</strong> Rp{' '}
+                    {item.subtotal.toLocaleString('id-ID')}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </EditModal>
+      )}
 
       {editData && (
         <EditModal

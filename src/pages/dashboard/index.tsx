@@ -10,6 +10,7 @@ import { dashboardService } from '../../services/dashboard.ts';
 import { useQuery } from '@tanstack/react-query';
 import { ColumnDef } from '@tanstack/react-table';
 import { Tpesanan } from '@/types/dashboard.ts';
+import { authService } from '@/services/auth.ts';
 import { TDataResponse, TApiResponse } from '@/types/dashboard.ts';
 import { DataTableSkeleton } from '@/components/shared/data-table-skeleton';
 import DataTable from '../../components/shared/data-table';
@@ -19,6 +20,11 @@ export default function DashboardPage() {
   const { data: pesanan, isLoading } = useQuery({
     queryKey: ['pesanan'],
     queryFn: dashboardService.getAll
+  });
+
+  const { data: users } = useQuery({
+    queryKey: ['users'],
+    queryFn: authService.getCurrentUser
   });
 
   const { data: dataTotal, isLoading: isLoadingDataTotal } = useQuery<
@@ -35,6 +41,8 @@ export default function DashboardPage() {
   const totalUsers = dataTotal?.data?.users ?? 0;
   const totalSaldo = dataTotal?.data?.saldo ?? 0;
   const sumPemasukan = dataTotal?.data?.pemasukanCount ?? 0;
+
+  const userAddress = users?.location?.address;
 
   const columns: ColumnDef<Tpesanan>[] = [
     {
@@ -61,19 +69,19 @@ export default function DashboardPage() {
     },
     {
       accessorKey: 'users.first_name',
-      header: 'First Name'
+      header: 'Nama Awal Pengguna'
     },
     {
       accessorKey: 'users.last_name',
-      header: 'Last Name'
+      header: 'Nama Akhir Pengguna'
     },
     {
       accessorKey: 'users.phone',
-      header: 'Phone'
+      header: 'Nomor Telepon Pengguna'
     },
     {
-      accessorKey: 'users.email',
-      header: 'Email'
+      accessorKey: 'address',
+      header: 'Alamat Pemesan'
     }
   ];
 
@@ -86,6 +94,9 @@ export default function DashboardPage() {
           <h2 className="text-3xl font-bold tracking-tight">
             Hi, Selamat Datang👋
           </h2>
+        </div>
+        <div className="flex items-center justify-between space-y-2">
+          <h3 className="text-2xl font-bold tracking-tight">{userAddress}</h3>
         </div>
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>

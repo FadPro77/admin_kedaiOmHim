@@ -19,4 +19,7 @@ export type TUser = {
   email: string;
   phone: string;
   role_id: 1;
+  location?: {
+    address: string;
+  };
 };

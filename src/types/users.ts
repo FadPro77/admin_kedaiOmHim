@@ -19,6 +19,9 @@ export type TUsers = {
   phone: string;
   status: string;
   role: string;
+  location: {
+    address: string;
+  };
 };
 
 export type TUsersCreate = {
