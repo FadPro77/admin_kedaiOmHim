@@ -25,9 +25,13 @@ export default function PesananPage() {
 
   const queryClient = useQueryClient();
 
-  const { data: pesanan, isLoading } = useQuery({
+  const { data: pesananRaw, isLoading } = useQuery({
     queryKey: ['pesanan'],
     queryFn: pesananService.getAll
+  });
+
+  const pesanan = pesananRaw?.slice().sort((a, b) => {
+    return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
   });
 
   const { data: detailPesanan } = useQuery({
