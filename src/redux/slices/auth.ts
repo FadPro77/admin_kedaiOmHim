@@ -1,5 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const isTokenExpired = (token) => {
+  try {
+    const { exp } = JSON.parse(atob(token.split('.')[1]));
+    return Date.now() >= exp * 1000;
+  } catch {
+    return true; // treat invalid token as expired
+  }
+};
+
+const storedToken = localStorage.getItem('token');
+const initialToken =
+  storedToken && !isTokenExpired(storedToken) ? storedToken : null;
+
+if (!initialToken) {
+  localStorage.removeItem('token');
+}
+
 const initialState = {
   user: null,
   token: localStorage.getItem('token') || null
